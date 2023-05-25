@@ -1,0 +1,19 @@
+import { ClientConfigBuilder, PolywrapClient } from "@polywrap/client-js";
+import { Workflow } from "./types";
+
+export const invokeWorkflow = () => {
+  const workflow: Workflow = {{workflow}}
+
+  let config = new ClientConfigBuilder().addDefaults().build()
+  let client = new PolywrapClient(config)
+  let result: any;
+  let i = 0
+
+  {{#steps}}
+    {{snippet}}
+    workflow.steps[i].result = JSON.stringify(result)
+    i++;
+  {{/steps}}
+
+  return workflow
+}
