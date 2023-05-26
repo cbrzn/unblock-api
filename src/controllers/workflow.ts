@@ -24,13 +24,37 @@ const createWorkflow = async (
 const getWorkflow = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.params.userId as string;
-    let workflowPath = `../../workflows/${userId}.ts`;
+    const workflowPath = `${__dirname}/../../workflows/${userId}.ts`;
     const workflowExists = fse.existsSync(workflowPath);
 
-    if (workflowExists) {
-      const workflow = fse.readJSONSync(workflowPath);
-      return res.status(200).send(workflow);
+    if (!workflowExists) {
+      return res
+        .status(404)
+        .send(`User with id ${userId} does not has created a workflow`);
     }
+
+    const workflow = fse.readFileSync(workflowPath, "utf-8");
+    return res.status(200).send(workflow);
+  } catch (err) {
+    console.log(err);
+    next(err);
+  }
+};
+
+const runWorkflow = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const userId = req.params.userId as string;
+    const workflowPath = `${__dirname}/../../workflows/${userId}.ts`;
+    const workflowExists = fse.existsSync(workflowPath);
+
+    if (!workflowExists) {
+      throw new Error(`User with id ${userId} does not has created a workflow`);
+    }
+
+    const { invoke } = await import(workflowPath);
+    const workflow = await invoke();
+    console.log(workflow);
+    res.send(200);
   } catch (err) {
     next(err);
   }
@@ -38,3 +62,4 @@ const getWorkflow = async (req: Request, res: Response, next: NextFunction) => {
 
 workflowRouter.post("/", createWorkflow);
 workflowRouter.get("/:userId", getWorkflow);
+workflowRouter.post("/:userId", runWorkflow);

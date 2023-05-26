@@ -12,7 +12,6 @@ export const renderTemplate = (workflow: Workflow, userId: string) => {
 
   const renderedSource = renderInvokeTemplate({ workflow });
 
-  // return renderedSource
   fse.ensureDirSync("./workflows");
   fse.writeFileSync(`./workflows/${userId}.ts`, renderedSource);
 };

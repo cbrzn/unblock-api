@@ -1,12 +1,16 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "module": "commonjs",
     "strict": true,
     "lib": ["dom", "ES2021"],
     "esModuleInterop": true,
     "outDir": "dist",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "typeRoots": [
+      "./src/declarations.d.ts",
+      "@node_modules/types"
+    ]
   },
   "exclude": [
     "buidler.config.ts",
