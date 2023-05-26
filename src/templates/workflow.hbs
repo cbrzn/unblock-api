@@ -1,0 +1,23 @@
+import { ClientConfigBuilder, PolywrapClient } from "@polywrap/client-js";
+import { Workflow } from "../src/types";
+import { wasmPackage as EnsPackage } from "../src/wraps/ens";
+
+export const invokeWorkflow = async () => {
+  const workflow: Workflow = {{{ json workflow }}}
+
+  const builder = new ClientConfigBuilder();
+  builder.addDefaults().addPackage("wrap/ens", EnsPackage);
+  let config = builder.build();
+
+  let client = new PolywrapClient(config)
+  let result: any;
+  let i = 0
+
+  {{#each workflow.steps}}
+  {{{snippet}}}
+  workflow.steps[i].result = JSON.stringify(result)
+  i++;
+  {{/each}}
+
+  return workflow
+}

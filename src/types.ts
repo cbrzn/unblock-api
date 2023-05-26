@@ -1,10 +1,11 @@
 export interface Step {
-  name: string,
-  snippet: string,
-  result: string
+  name: string;
+  snippet: String;
+  result?: string;
 }
 
 export interface Workflow {
-  name: string,
-  steps: Step[]
+  name: string;
+  steps: Step[];
+  result?: string
 }

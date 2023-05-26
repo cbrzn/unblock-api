@@ -3,14 +3,10 @@
     "target": "es5",
     "module": "commonjs",
     "strict": true,
-    "lib": ["ES2019"],
+    "lib": ["dom", "ES2021"],
     "esModuleInterop": true,
     "outDir": "dist",
-    "resolveJsonModule": true,
-    "typeRoots": [      
-      "custom_typings",
-      "./node_modules/@types",
-    ]
+    "resolveJsonModule": true
   },
   "exclude": [
     "buidler.config.ts",
